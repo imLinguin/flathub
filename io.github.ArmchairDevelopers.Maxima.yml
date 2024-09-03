@@ -1,0 +1,134 @@
+id: io.github.ArmchairDevelopers.Maxima
+runtime: org.freedesktop.Platform
+runtime-version: &runtime-version "23.08"
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-nightly
+command: maxima
+
+x-gl-version: &gl-version "1.4"
+x-gl-versions: &gl-versions 23.08;1.4
+x-gl-merge-dirs: &gl-merge-dirs vulkan/icd.d;glvnd/egl_vendor.d;egl/egl_external_platform.d;OpenCL/vendors;lib/dri;lib/d3d;lib/gbm;vulkan/explicit_layer.d;vulkan/implicit_layer.d
+
+finish-args:
+  - --allow=multiarch
+  - --device=all
+  - --share=network
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --env=PATH=$PATH:/app/bin:/app/utils/bin:/usr/bin:/usr/lib/extensions/vulkan/MangoHud/bin:/usr/lib/extensions/vulkan/gamescope/bin
+  - --env=MAXIMA_PACKAGED=1
+  - --env=MAXIMA_DISABLE_QRC=1
+  - --filesystem=/media
+  - --filesystem=/run/media
+  - --filesystem=/mnt
+  - --filesystem=~/.steam/steam
+  - --filesystem=~/.steam
+  - --filesystem=~/Games
+
+build-options:
+  append-path: /usr/lib/sdk/rust-nightly/extra/sdk/rust-nightly/bin
+  env:
+    CARGO_HOME: /run/build/maxima/cargo
+
+add-extensions:
+  org.freedesktop.Platform.Compat.i386:
+    directory: lib/i386-linux-gnu
+    version: *runtime-version 
+
+  org.freedesktop.Platform.GL32:
+    directory: lib/i386-linux-gnu/GL
+    version: *gl-version
+    versions: *gl-versions
+    subdirectories: true
+    no-autodownload: true
+    autodelete: false
+    add-ld-path: lib
+    merge-dirs: *gl-merge-dirs
+    download-if: active-gl-driver
+    enable-if: active-gl-driver
+    autoprune-unless: active-gl-driver
+
+  org.freedesktop.Platform.VAAPI.Intel.i386:
+    directory: lib/i386-linux-gnu/dri/intel-vaapi-driver
+    version: *runtime-version
+    versions: *runtime-version
+    autodelete: false
+    no-autodownload: true
+    add-ld-path: lib
+    download-if: have-intel-gpu
+    autoprune-unless: have-intel-gpu
+
+modules:
+  - name: abseil-cpp
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DBUILD_SHARED_LIBS=ON
+      - -DABSL_PROPAGATE_CXX_STD=ON
+      - -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+    cleanup:
+      - "*"
+    sources:
+      - type: archive
+        url: https://github.com/abseil/abseil-cpp/archive/refs/tags/20240722.0.tar.gz
+        sha256: f50e5ac311a81382da7fa75b97310e4b9006474f9560ac46f54a9967f07d4ae3
+        x-checker-data:
+          type: anitya
+          project-id: 115295
+          stable-only: true
+          url-template: https://github.com/abseil/abseil-cpp/archive/refs/tags/$version.tar.gz
+
+  - name: protobuf
+    buildsystem: cmake-ninja
+    config-opts:
+      - -Dprotobuf_BUILD_TESTS=OFF
+      - -Dprotobuf_ABSL_PROVIDER=package
+    cleanup:
+      - "*"
+    sources:
+      - type: archive
+        url: https://github.com/protocolbuffers/protobuf/releases/download/v28.0/protobuf-28.0.tar.gz
+        sha256: 13e7749c30bc24af6ee93e092422f9dc08491c7097efa69461f88eb5f61805ce
+        x-checker-data:
+          type: anitya
+          project-id: 3715
+          stable-only: true
+          url-template: https://github.com/protocolbuffers/protobuf/releases/download/v$version/protobuf-$version.tar.gz
+
+  - name: maxima
+    buildsystem: simple
+    build-commands:
+      - cargo --offline fetch --verbose
+      - cargo --offline build --verbose --all-features --release
+      - install -Dm 755 target/release/maxima /app/bin
+      - install -Dm 755 target/release/maxima-bootstrap /app/bin
+      - install -Dm 755 target/release/maxima-cli /app/bin
+      - install -Dm 755 target/release/maxima-tui /app/bin
+    sources:
+      - type: git 
+        url: https://github.com/ArmchairDevelopers/Maxima.git
+
+      - "cargo-sources.json"
+
+  - name: setup
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/lib/i386-linux-gnu
+      - mkdir -p /app/lib/debug/lib/i386-linux-gnu
+      - mkdir -p /app/lib/i386-linux-gnu/GL
+      - mkdir -p /app/lib/i386-linux-gnu/dri/intel-vaapi-driver
+      - install -Dm644 ld.so.conf /app/etc/ld.so.conf
+      - install -Dm644 io.github.ArmchairDevelopers.Maxima.desktop /app/share/applications/$FLATPAK_ID.desktop
+      - install -Dm644 io.github.ArmchairDevelopers.Maxima.Bootstrap.desktop /app/share/applications/$FLATPAK_ID.Bootstrap.desktop
+      - install -Dm644 io.github.ArmchairDevelopers.Maxima.metainfo.xml /app/share/metainfo/$FLATPAK_ID.metainfo.xml
+      - install -Dm644 io.github.ArmchairDevelopers.Maxima.png /app/share/icons/hicolor/48x48/apps/$FLATPAK_ID.png
+    sources:
+      - type: dir
+        path: .
+      - type: inline
+        dest-filename: ld.so.conf
+        contents: |
+          /app/lib32
+          /app/lib/i386-linux-gnu

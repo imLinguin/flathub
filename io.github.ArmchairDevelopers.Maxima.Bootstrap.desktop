@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Maxima Protocol Handler
+Type=Application
+Icon=io.github.ArmchairDevelopers.Maxima
+MimeType=x-scheme-handler/qrc;x-scheme-handler/link2ea;x-scheme-handler/origin2
+Exec=maxima-bootstrap %u
+NoDisplay=true
+StartupNotify=true

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.ArmchairDevelopers.Maxima</id>
+  
+  <name>Maxima</name>
+  <url type="homepage">https://github.com/ArmchairDevelopers/Maxima</url>
+  <developer id="io.github.armchairdevelopers">
+    <name>Armchair Developers</name>
+  </developer>
+  <summary>A free and open-source replacement for the EA Desktop Launcher</summary>
+  
+  <metadata_license>MIT</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  
+  <description>
+    <p>
+      Maxima is in beta. Parts of it may not be fully stable, and we're actively fixing bugs and adding features. Please create an issue if you notice strange behavior.
+    </p>
+
+    <p>Features</p>
+    <ul>
+      <li>EA Authentication</li>
+      <li>Downloading/Updating games</li>
+      <li>Download &amp; Play any build of a game</li>
+      <li>DRM &amp; Licensing support</li>
+      <li>Multiplayer game support</li>
+      <li>Syncing EA cloud saves</li>
+      <li>Launch EA games owned on Epic/Steam through Maxima directly</li>
+      <li>Playing games installed with EA Desktop on Maxima + vice versa</li>
+      <li>Displaying your in-game status to your friends, and viewing your friends' status</li>
+      <li>Locating games</li>
+    </ul>
+    
+    <p>In-Dev</p>
+    <ul>
+      <li>MacOS support</li>
+      <li>Support for launching Maxima through Epic/Steam</li>
+    </ul>
+
+    <p>In-Dev</p>
+    <ul>
+      <li>Library documentation/examples</li>
+      <li>Support for installing DLCs</li>
+      <li>Full EA Desktop inteopabillity. Games installed with EA Desktop already appear on Maxima, but to take it a step further we'd like the ability to, for example, start a download on EA Desktop and continue it on Maxima.</li>
+      <li>Cleaner/Stabler downloader implementation</li>
+      <li>
+        Progressive/Selective installs; Some games are able to start without being fully installed, and some games contain language-specific files.
+      </li>
+      <li>Support for the store (buying games)</li>
+      <li>Friend Adding/Removing/Inviting</li>
+      <li>Status setting; locked to "online" at the moment</li>
+    </ul>
+
+    <p>Unsupported</p>
+    <ul>
+      <li>
+        Battlefield 3/4 are currently unsupported due to how battlelog does game launching. This is on our radar, but isn't a huge priority at the moment.
+        Please file an issue if you find more games that don't work
+      </li>
+      <li>Old games like Dead Space 2 and BFBC2 are unsupported due to being pre-"Download-In-Place" era games. They have a different manifest format which we need to make a parser for.</li>
+    </ul>
+
+    <p>Why the name 'Maxima'?</p>
+    <p>It's the farthest you can get from the Origin.</p>
+
+  </description>
+
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">moderate</content_attribute>
+    <content_attribute id="violence-fantasy">moderate</content_attribute>
+    <content_attribute id="violence-realistic">moderate</content_attribute>
+    <content_attribute id="violence-bloodshed">moderate</content_attribute>
+    <content_attribute id="money-purchasing">intense</content_attribute>
+  </content_rating>
+
+  <launchable type="desktop-id">io.github.ArmchairDevelopers.Maxima.desktop</launchable>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://github.com/ArmchairDevelopers/Maxima/raw/master/images/UI.png</image>
+      <caption>Game Library</caption>
+    </screenshot>
+  </screenshots>
+</component>
