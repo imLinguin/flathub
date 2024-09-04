@@ -3,7 +3,7 @@ Version=1.0
 Type=Application
 
 Name=Maxima Launcher
-Comment=A free and open-source replacement for the EA Desktop Launcher for Linux and Windows
+Comment=A free and open-source replacement for the EA Desktop Launcher
 Categories=Game;
 
 Icon=io.github.ArmchairDevelopers.Maxima
