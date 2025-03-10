@@ -29,12 +29,10 @@ finish-args:
   - --filesystem=~/.steam
   - --filesystem=~/Games
   # UMU
-  - --filesystem=xdg-data/umu
+  - --filesystem=xdg-data/umu:create
   - --allow=per-app-dev-shm
   # Wine uses UDisks2 to enumerate disk drives
   - --system-talk-name=org.freedesktop.UDisks2
-  # Required for bwrap to work
-  - --talk-name=org.freedesktop.portal.Background
   # --- Steam ---
   # Pressure Vessel
   # See https://github.com/flathub/com.valvesoftware.Steam/commit/0538256facdb0837c33232bc65a9195a8a5bc750
@@ -104,8 +102,6 @@ add-extensions:
     autoprune-unless: have-intel-gpu
 
 modules:
-  - "umu-launcher.json"
-
   - name: abseil-cpp
     buildsystem: cmake-ninja
     config-opts:
@@ -134,8 +130,8 @@ modules:
       - "*"
     sources:
       - type: archive
-        url: https://github.com/protocolbuffers/protobuf/releases/download/v28.0/protobuf-28.0.tar.gz
-        sha256: 13e7749c30bc24af6ee93e092422f9dc08491c7097efa69461f88eb5f61805ce
+        url: https://github.com/protocolbuffers/protobuf/releases/download/v28.2/protobuf-28.2.tar.gz
+        sha256: b2340aa47faf7ef10a0328190319d3f3bee1b24f426d4ce8f4253b6f27ce16db
         x-checker-data:
           type: anitya
           project-id: 3715
